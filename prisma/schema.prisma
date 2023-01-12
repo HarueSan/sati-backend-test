@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model patient {
+  patientId  String      @id @default(uuid()) @map("patient_id")
+  firstName  String?     @map("first_name")
+  middleName String      @map("middle_name")
+  lastName   String?     @map("lastname")
+  birthDate  DateTime    @map("birth_date")
+  createdAt  DateTime    @default(now()) @map("create_at")
+  updatedAt  DateTime    @default(now()) @updatedAt @map("update_at")
+  encounter  encounter[]
+}
+
+model encounter {
+  encounterId         String   @id @default(uuid())
+  visit               DateTime
+  discharge           DateTime
+  physicalExamination String   @map("physical_examination")
+  historyOfIllness    String   @map("history_of_illness")
+  followUp            DateTime @map("follow_up")
+  patient             patient  @relation(fields: [patientId], references: [patientId])
+  patientId           String   @map("patient_id")
+  createdAt           DateTime @default(now()) @map("create_at")
+  updatedAt           DateTime @default(now()) @updatedAt @map("update_at")
+}
