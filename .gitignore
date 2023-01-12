@@ -4,3 +4,4 @@ node_modules
 built/
 build/
 .vscode/
+.DS_Store
